@@ -1,12 +1,35 @@
-# Drizzle
+# Drizzle 💧
 
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 [![License: MIT][license_badge]][license_link]
 
-A simple package to persist and query small dataset of data
+A simple package to persist and query small dataset of data.
 
-(WIP)
+__Still heavily in development__ so Documentation will be written later. So for now check the [example](./example) on how to use the API. Better documentation may be written later.
+
+## Motivation
+
+During the some of the development of my games, I find myself in need of persisting and manipulating
+small dataset of data.
+
+Flutter/Dart have great database packages, but they always felt too much for what I needed, while
+when just using `shared_preferences`, I found myself doing the same manual manipulation over and
+over again. So I felt that I could build some in between.
+
+Drizzle is based on the three pillars:
+
+ - It is meant for small sets of data.
+ - It keeps all the data in memory, and persist them in the background
+ - It allow for persistence to be configured
+
+As one can note, Drizzle was born to solve a very specific user case, so if you found it while
+searching for a more complete and general use data persistence package for flutter/dart, I really
+recommend trying one of the followings:
+
+ - [ObjectBox](https://pub.dev/packages/objectbox)
+ - [Isar](https://pub.dev/packages/isar)
+ - [Hive](https://pub.dev/packages/hive)
 
 ## Installation 💻
 
