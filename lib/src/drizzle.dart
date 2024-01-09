@@ -91,6 +91,7 @@ class Drizzle {
 
   /// Updates a document from the given [entity] by its [id].
   void update(String entity, String id, Map<String, dynamic> data) {
+    _data[entity] ??= {};
     _data[entity]?[id] = data;
     _syncEntity(entity);
   }

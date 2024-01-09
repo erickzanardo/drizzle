@@ -54,7 +54,7 @@ void main() {
         () => dataStore.saveEntity(
           'people',
           {
-            id: {'name': 'Luke Skywalker'}
+            id: {'name': 'Luke Skywalker'},
           },
         ),
       ).called(1);
@@ -76,7 +76,7 @@ void main() {
         () => dataStore.saveEntity(
           'people',
           {
-            id: {'name': 'Luke Skywalker'}
+            id: {'name': 'Luke Skywalker'},
           },
         ),
       ).called(1);
@@ -92,7 +92,35 @@ void main() {
         () => dataStore.saveEntity(
           'people',
           {
-            id: {'name': 'Darth Vader'}
+            id: {'name': 'Darth Vader'},
+          },
+        ),
+      ).called(1);
+
+      final updatedResult = drizzle.get('people', id);
+
+      expect(updatedResult, isNotNull);
+      expect(updatedResult?['name'], equals('Darth Vader'));
+    });
+
+    test('updates a document to static id', () async {
+      when(() => dataStore.saveEntity(any(), any())).thenAnswer(
+        (_) => Future<void>.value(),
+      );
+
+      const id = 'sith_lord';
+
+      final result = drizzle.get('people', id);
+
+      expect(result, isNull);
+
+      drizzle.update('people', id, {'name': 'Darth Vader'});
+
+      verify(
+        () => dataStore.saveEntity(
+          'people',
+          {
+            id: {'name': 'Darth Vader'},
           },
         ),
       ).called(1);
@@ -114,7 +142,7 @@ void main() {
         () => dataStore.saveEntity(
           'people',
           {
-            id: {'name': 'Luke Skywalker'}
+            id: {'name': 'Luke Skywalker'},
           },
         ),
       ).called(1);
@@ -169,7 +197,7 @@ void main() {
         () => dataStore.saveEntity(
           'people',
           {
-            id: {'name': 'Luke Skywalker'}
+            id: {'name': 'Luke Skywalker'},
           },
         ),
       ).called(1);
