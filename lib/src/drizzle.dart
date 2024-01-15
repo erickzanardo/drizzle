@@ -12,6 +12,9 @@ abstract class DrizzleDataStore {
     Map<String, Map<String, dynamic>> entity,
   );
 
+  /// Delete an entity from the data store.
+  Future<void> deleteEntity(String entityName);
+
   /// Read all entities from the data store.
   Future<Map<String, Map<String, Map<String, dynamic>>>> readAllEntities();
 }
@@ -56,6 +59,11 @@ class Drizzle {
     final data = await _dataStore.readAllEntities();
     _data.addAll(data);
     _initialized = true;
+  }
+
+  /// Returns a list of entities.
+  List<String> entities() {
+    return _data.keys.toList();
   }
 
   /// Adds a document to the given [entity], returning its ID.
@@ -116,5 +124,17 @@ class Drizzle {
         ...e.value,
       };
     }).toList();
+  }
+
+  /// Purges all data from the data store.
+  ///
+  /// WARNING: This is a destructive operation.
+  Future<void> purgeData() async {
+    final entities = _data.keys.toList();
+
+    final deleteOperations = entities.map(_dataStore.deleteEntity);
+    _operations.addAll(deleteOperations);
+
+    return pendingOperations();
   }
 }

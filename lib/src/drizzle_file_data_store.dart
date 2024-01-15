@@ -70,4 +70,11 @@ class DrizzleFileDataStore extends DrizzleDataStore {
       path.join(await _path(), '$entityName.json'),
     ).writeAsString(jsonEncode(entity));
   }
+
+  @override
+  Future<void> deleteEntity(String entityName) async {
+    await File(
+      path.join(await _path(), '$entityName.json'),
+    ).delete();
+  }
 }

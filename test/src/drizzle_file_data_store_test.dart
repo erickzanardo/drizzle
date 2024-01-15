@@ -33,5 +33,18 @@ void main() {
       expect(result['people']?['a']?['name'], 'Luke Skywalker');
       expect(result['people']?['b']?['name'], 'C-3PO');
     });
+
+    test('delete an entity', () async {
+      await dataStore.saveEntity('people', {
+        'a': {'name': 'Luke Skywalker'},
+        'b': {'name': 'C-3PO'},
+      });
+
+      await dataStore.deleteEntity('people');
+
+      final result = await dataStore.readAllEntities();
+      expect(result, isNotNull);
+      expect(result['people'], isNull);
+    });
   });
 }

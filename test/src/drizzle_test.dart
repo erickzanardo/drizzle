@@ -43,6 +43,20 @@ void main() {
       expect(people[1]['name'], 'C-3PO');
     });
 
+    test('list all entities', () async {
+      when(dataStore.readAllEntities).thenAnswer(
+        (_) async => {
+          'people': {
+            '1': {'name': 'Luke Skywalker'},
+            '2': {'name': 'C-3PO'},
+          },
+        },
+      );
+      await drizzle.load();
+      final entities = drizzle.entities();
+      expect(entities, equals(['people']));
+    });
+
     test('adds a document to an entity', () async {
       when(() => dataStore.saveEntity(any(), any())).thenAnswer(
         (_) => Future<void>.value(),
@@ -208,6 +222,35 @@ void main() {
       expect(result?['name'], equals('Luke Skywalker'));
 
       await expectLater(drizzle.pendingOperations(), completes);
+    });
+
+    test('purges the dataStore', () async {
+      when(dataStore.readAllEntities).thenAnswer(
+        (_) async => {
+          'people': {
+            '1': {'name': 'Luke Skywalker'},
+            '2': {'name': 'C-3PO'},
+          },
+          'spaceship': {
+            '1': {'name': 'X-Wing'},
+            '2': {'name': 'Tiefighter'},
+          },
+        },
+      );
+
+      when(() => dataStore.deleteEntity(any())).thenAnswer(
+        (_) => Future<void>.value(),
+      );
+
+      await drizzle.load();
+      await drizzle.purgeData();
+
+      verify(
+        () => dataStore.deleteEntity('people'),
+      ).called(1);
+      verify(
+        () => dataStore.deleteEntity('spaceship'),
+      ).called(1);
     });
   });
 }
