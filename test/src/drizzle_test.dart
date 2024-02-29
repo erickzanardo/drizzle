@@ -251,6 +251,7 @@ void main() {
       verify(
         () => dataStore.deleteEntity('spaceship'),
       ).called(1);
+      expect(drizzle.entities(), isEmpty);
     });
   });
 }

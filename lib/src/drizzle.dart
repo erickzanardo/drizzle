@@ -135,6 +135,8 @@ class Drizzle {
     final deleteOperations = entities.map(_dataStore.deleteEntity);
     _operations.addAll(deleteOperations);
 
+    _data.clear();
+
     return pendingOperations();
   }
 }
