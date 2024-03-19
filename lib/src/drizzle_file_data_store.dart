@@ -8,14 +8,22 @@ import 'package:path/path.dart' as path;
 /// A [DrizzleDataStore] that persists data to a file.
 ///
 /// Where each entity is saved in its own file.
+///
+/// [DrizzleFileDataStore] allows more than one instance to be created in the
+/// same folder, by providing a unique instanceName for each.
+///
+/// By default the `_drizzle` instanceName is used.
 /// {@endtemplate}
 class DrizzleFileDataStore extends DrizzleDataStore {
   /// {@macro drizzle_file_data_store}
   DrizzleFileDataStore({
     required String basePath,
-  }) : _basePath = basePath;
+    String instanceName = '_drizzle',
+  })  : _basePath = basePath,
+        _instanceName = instanceName;
 
   final String _basePath;
+  final String _instanceName;
 
   String? _storagePath;
 
@@ -24,7 +32,7 @@ class DrizzleFileDataStore extends DrizzleDataStore {
 
     _storagePath = path.join(
       _basePath,
-      '_drizzle',
+      _instanceName,
     );
 
     final dir = Directory(_storagePath!);
