@@ -1,7 +1,6 @@
 name: drizzle
 description: A simple package to persist and query small dataset of data
 version: 0.1.0+1
-publish_to: none
 repository: https://github.com/erickzanardo/drizzle
 
 environment:
