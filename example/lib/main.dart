@@ -1,3 +1,6 @@
+// Needed for a terminal app
+// ignore_for_file: avoid_print
+
 import 'package:drizzle/drizzle.dart';
 
 void main(List<String> args) async {
