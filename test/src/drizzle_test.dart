@@ -44,6 +44,25 @@ void main() {
       expect(people[1]['name'], 'C-3PO');
     });
 
+    test('loads the metadata', () async {
+      when(dataStore.readAllEntities).thenAnswer(
+        (_) async => {
+          'people': {
+            '1': {'name': 'Luke Skywalker'},
+            '2': {'name': 'C-3PO'},
+          },
+          drizzleMetadataField: {
+            drizzleLastSyncKey: {'value': '2024-01-01T12:00:00.000Z'},
+          },
+        },
+      );
+      final metadata = await drizzle.load();
+      expect(
+        metadata.lastSync,
+        DateTime.parse('2024-01-01T12:00:00.000Z'),
+      );
+    });
+
     test('list all entities', () async {
       when(dataStore.readAllEntities).thenAnswer(
         (_) async => {
@@ -83,7 +102,7 @@ void main() {
                   isA<Map<String, dynamic>>().having(
                     (m) => m[drizzleLastSyncKey],
                     '',
-                    isA<String>(),
+                    isA<Map<String, dynamic>>(),
                   ),
                 ),
           ),
@@ -121,7 +140,7 @@ void main() {
                   isA<Map<String, dynamic>>().having(
                     (m) => m[drizzleLastSyncKey],
                     '',
-                    isA<String>(),
+                    isA<Map<String, dynamic>>(),
                   ),
                 ),
           ),
@@ -153,7 +172,7 @@ void main() {
                   isA<Map<String, dynamic>>().having(
                     (m) => m[drizzleLastSyncKey],
                     '',
-                    isA<String>(),
+                    isA<Map<String, dynamic>>(),
                   ),
                 ),
           ),
@@ -197,7 +216,7 @@ void main() {
                   isA<Map<String, dynamic>>().having(
                     (m) => m[drizzleLastSyncKey],
                     '',
-                    isA<String>(),
+                    isA<Map<String, dynamic>>(),
                   ),
                 ),
           ),
@@ -235,7 +254,7 @@ void main() {
                   isA<Map<String, dynamic>>().having(
                     (m) => m[drizzleLastSyncKey],
                     '',
-                    isA<String>(),
+                    isA<Map<String, dynamic>>(),
                   ),
                 ),
           ),
@@ -265,7 +284,7 @@ void main() {
                   isA<Map<String, dynamic>>().having(
                     (m) => m[drizzleLastSyncKey],
                     '',
-                    isA<String>(),
+                    isA<Map<String, dynamic>>(),
                   ),
                 ),
           ),
@@ -322,7 +341,7 @@ void main() {
                   isA<Map<String, dynamic>>().having(
                     (m) => m[drizzleLastSyncKey],
                     '',
-                    isA<String>(),
+                    isA<Map<String, dynamic>>(),
                   ),
                 ),
           ),

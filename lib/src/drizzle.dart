@@ -59,7 +59,7 @@ class Drizzle {
     final data = {
       ..._data[entity]!,
       drizzleMetadataField: {
-        drizzleLastSyncKey: DateTime.now().toIso8601String()
+        drizzleLastSyncKey: {'value': DateTime.now().toIso8601String()},
       },
     };
 
@@ -85,8 +85,9 @@ class Drizzle {
     final metadataEntry = data[drizzleMetadataField] ?? {};
 
     final metadata = DrizzleMetadata(
-      lastSync: metadataEntry[drizzleLastSyncKey] != null
-          ? DateTime.parse(metadataEntry[drizzleLastSyncKey]! as String)
+      lastSync: metadataEntry[drizzleLastSyncKey]?['value'] != null
+          ? DateTime.parse(
+              metadataEntry[drizzleLastSyncKey]?['value']! as String)
           : DateTime.fromMillisecondsSinceEpoch(0),
     );
 
