@@ -19,6 +19,23 @@ abstract class DrizzleDataStore {
   Future<Map<String, Map<String, Map<String, dynamic>>>> readAllEntities();
 }
 
+/// The field used to store metadata.
+const drizzleMetadataField = '__drizzle__';
+
+/// The key used to store the last sync time.
+const drizzleLastSyncKey = '__drizzle_last_sync__';
+
+/// Metadata about the data stored in [Drizzle].
+class DrizzleMetadata {
+  /// Creates a new instance of [DrizzleMetadata].
+  DrizzleMetadata({
+    required this.lastSync,
+  });
+
+  /// The last time the data was synced.
+  final DateTime lastSync;
+}
+
 /// {@template drizzle}
 /// A simple package to persist and query small dataset of data
 /// {@endtemplate}
@@ -39,7 +56,14 @@ class Drizzle {
   final _operations = <Future<dynamic>>[];
 
   void _syncEntity(String entity) {
-    final operation = _dataStore.saveEntity(entity, _data[entity]!);
+    final data = {
+      ..._data[entity]!,
+      drizzleMetadataField: {
+        drizzleLastSyncKey: {'value': DateTime.now().toIso8601String()},
+      },
+    };
+
+    final operation = _dataStore.saveEntity(entity, data);
 
     _operations.add(
       operation.then(
@@ -54,11 +78,25 @@ class Drizzle {
   }
 
   /// Loads data from a [DrizzleDataStore].
-  Future<void> load() async {
+  Future<DrizzleMetadata> load() async {
     assert(!_initialized, 'Drizzle is already initialized');
     final data = await _dataStore.readAllEntities();
+
+    final metadataEntry = data[drizzleMetadataField] ?? {};
+
+    final metadata = DrizzleMetadata(
+      lastSync: metadataEntry[drizzleLastSyncKey]?['value'] != null
+          ? DateTime.parse(
+              metadataEntry[drizzleLastSyncKey]?['value']! as String)
+          : DateTime.fromMillisecondsSinceEpoch(0),
+    );
+
+    data.remove(drizzleMetadataField);
+
     _data.addAll(data);
     _initialized = true;
+
+    return metadata;
   }
 
   /// Returns a list of entities.

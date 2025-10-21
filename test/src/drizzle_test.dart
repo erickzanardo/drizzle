@@ -1,3 +1,4 @@
+// Not needed for tests
 // ignore_for_file: prefer_const_constructors
 import 'package:drizzle/drizzle.dart';
 import 'package:mocktail/mocktail.dart';
@@ -43,6 +44,25 @@ void main() {
       expect(people[1]['name'], 'C-3PO');
     });
 
+    test('loads the metadata', () async {
+      when(dataStore.readAllEntities).thenAnswer(
+        (_) async => {
+          'people': {
+            '1': {'name': 'Luke Skywalker'},
+            '2': {'name': 'C-3PO'},
+          },
+          drizzleMetadataField: {
+            drizzleLastSyncKey: {'value': '2024-01-01T12:00:00.000Z'},
+          },
+        },
+      );
+      final metadata = await drizzle.load();
+      expect(
+        metadata.lastSync,
+        DateTime.parse('2024-01-01T12:00:00.000Z'),
+      );
+    });
+
     test('list all entities', () async {
       when(dataStore.readAllEntities).thenAnswer(
         (_) async => {
@@ -67,9 +87,25 @@ void main() {
       verify(
         () => dataStore.saveEntity(
           'people',
-          {
-            id: {'name': 'Luke Skywalker'},
-          },
+          any(
+            that: isA<Map<String, Map<String, dynamic>>>()
+                .having(
+                  (v) => v[id],
+                  '',
+                  equals(
+                    {'name': 'Luke Skywalker'},
+                  ),
+                )
+                .having(
+                  (v) => v[drizzleMetadataField],
+                  '',
+                  isA<Map<String, dynamic>>().having(
+                    (m) => m[drizzleLastSyncKey],
+                    '',
+                    isA<Map<String, dynamic>>(),
+                  ),
+                ),
+          ),
         ),
       ).called(1);
 
@@ -89,9 +125,25 @@ void main() {
       verify(
         () => dataStore.saveEntity(
           'people',
-          {
-            id: {'name': 'Luke Skywalker'},
-          },
+          any(
+            that: isA<Map<String, Map<String, dynamic>>>()
+                .having(
+                  (v) => v[id],
+                  '',
+                  equals(
+                    {'name': 'Luke Skywalker'},
+                  ),
+                )
+                .having(
+                  (v) => v[drizzleMetadataField],
+                  '',
+                  isA<Map<String, dynamic>>().having(
+                    (m) => m[drizzleLastSyncKey],
+                    '',
+                    isA<Map<String, dynamic>>(),
+                  ),
+                ),
+          ),
         ),
       ).called(1);
 
@@ -105,9 +157,25 @@ void main() {
       verify(
         () => dataStore.saveEntity(
           'people',
-          {
-            id: {'name': 'Darth Vader'},
-          },
+          any(
+            that: isA<Map<String, Map<String, dynamic>>>()
+                .having(
+                  (v) => v[id],
+                  '',
+                  equals(
+                    {'name': 'Darth Vader'},
+                  ),
+                )
+                .having(
+                  (v) => v[drizzleMetadataField],
+                  '',
+                  isA<Map<String, dynamic>>().having(
+                    (m) => m[drizzleLastSyncKey],
+                    '',
+                    isA<Map<String, dynamic>>(),
+                  ),
+                ),
+          ),
         ),
       ).called(1);
 
@@ -133,9 +201,25 @@ void main() {
       verify(
         () => dataStore.saveEntity(
           'people',
-          {
-            id: {'name': 'Darth Vader'},
-          },
+          any(
+            that: isA<Map<String, Map<String, dynamic>>>()
+                .having(
+                  (v) => v[id],
+                  '',
+                  equals(
+                    {'name': 'Darth Vader'},
+                  ),
+                )
+                .having(
+                  (v) => v[drizzleMetadataField],
+                  '',
+                  isA<Map<String, dynamic>>().having(
+                    (m) => m[drizzleLastSyncKey],
+                    '',
+                    isA<Map<String, dynamic>>(),
+                  ),
+                ),
+          ),
         ),
       ).called(1);
 
@@ -155,9 +239,25 @@ void main() {
       verify(
         () => dataStore.saveEntity(
           'people',
-          {
-            id: {'name': 'Luke Skywalker'},
-          },
+          any(
+            that: isA<Map<String, Map<String, dynamic>>>()
+                .having(
+                  (v) => v[id],
+                  '',
+                  equals(
+                    {'name': 'Luke Skywalker'},
+                  ),
+                )
+                .having(
+                  (v) => v[drizzleMetadataField],
+                  '',
+                  isA<Map<String, dynamic>>().having(
+                    (m) => m[drizzleLastSyncKey],
+                    '',
+                    isA<Map<String, dynamic>>(),
+                  ),
+                ),
+          ),
         ),
       ).called(1);
 
@@ -171,7 +271,23 @@ void main() {
       verify(
         () => dataStore.saveEntity(
           'people',
-          {},
+          any(
+            that: isA<Map<String, Map<String, dynamic>>>()
+                .having(
+                  (v) => v[id],
+                  '',
+                  isNull,
+                )
+                .having(
+                  (v) => v[drizzleMetadataField],
+                  '',
+                  isA<Map<String, dynamic>>().having(
+                    (m) => m[drizzleLastSyncKey],
+                    '',
+                    isA<Map<String, dynamic>>(),
+                  ),
+                ),
+          ),
         ),
       ).called(1);
 
@@ -210,9 +326,25 @@ void main() {
       verify(
         () => dataStore.saveEntity(
           'people',
-          {
-            id: {'name': 'Luke Skywalker'},
-          },
+          any(
+            that: isA<Map<String, Map<String, dynamic>>>()
+                .having(
+                  (v) => v[id],
+                  '',
+                  equals(
+                    {'name': 'Luke Skywalker'},
+                  ),
+                )
+                .having(
+                  (v) => v[drizzleMetadataField],
+                  '',
+                  isA<Map<String, dynamic>>().having(
+                    (m) => m[drizzleLastSyncKey],
+                    '',
+                    isA<Map<String, dynamic>>(),
+                  ),
+                ),
+          ),
         ),
       ).called(1);
 
